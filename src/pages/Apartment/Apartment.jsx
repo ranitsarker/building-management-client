@@ -1,9 +1,12 @@
 import  { useState, useEffect } from 'react';
 import Container from '../../components/Shared/Container';
+import useAuth from '../../hooks/useAuth';
+import handleAgreement from '../../components/handleAgreement';
 
 
 const Apartment = () => {
   const [apartments, setApartments] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,6 +21,8 @@ const Apartment = () => {
 
     fetchData();
   }, []);
+
+  
 
   return (
     <>
@@ -36,6 +41,7 @@ const Apartment = () => {
               <p className="text-gray-600">Rent: ${apartment.rent}</p>
               <button
                 className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                onClick={() => handleAgreement(apartment, user)}
               >
                 Agreement
               </button>
