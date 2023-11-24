@@ -1,42 +1,18 @@
-{
-    "apartments": [
+ [
       {
-        "apartmentId": "1",
         "image": "https://i.ibb.co/f1494DN/london.webp",
         "floorNo": "1",
         "blockName": "A",
         "apartmentNo": "101",
         "rent": 305,
-        "agreementButton": {
-          "action": "storeAgreement",
-          "data": {
-            "floorNo": "1",
-            "blockName": "A",
-            "apartmentNo": "101",
-            "rent": 305,
-            "Status": "pending"
-          }
-        }
+        "Status": "pending"
       },
       {
-        "apartmentId": "2",
         "image": "https://i.ibb.co/M6mBkXT/Avalon-Beach.webp",
         "floorNo": "2",
         "blockName": "B",
         "apartmentNo": "201",
         "rent": 269,
-        "agreementButton": {
-          "action": "storeAgreement",
-          "data": {
-            "floorNo": "2",
-            "blockName": "B",
-            "apartmentNo": "201",
-            "rent": 269,
-            "Status": "pending"
-          }
-        }
+        "Status": "pending"
       }
-    ],
-    "userAgreements": []
-  }
-  
+]
