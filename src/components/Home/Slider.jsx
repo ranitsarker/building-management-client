@@ -10,16 +10,19 @@ const AutoplaySlider = withAutoplay(AwesomeSlider);
 
 const Slider = () => {
   return (
-    <AutoplaySlider
-      play={true}
-      cancelOnInteraction={false} // should stop playing on user interaction
-      interval={6000}
-    >
-      <div data-src={banner1}/>
-      <div data-src={banner2}/>
-      <div data-src={banner3}/>
-      <div data-src={banner4}/>
-    </AutoplaySlider>
+    <div className='z-0'>
+      <AutoplaySlider
+        play={true}
+        cancelOnInteraction={false} // should stop playing on user interaction
+        interval={6000}
+      >
+        <div data-src={banner1}/>
+        <div data-src={banner2}/>
+        <div data-src={banner3}/>
+        <div data-src={banner4}/>
+      </AutoplaySlider>
+    </div>
+
   );
 };
 

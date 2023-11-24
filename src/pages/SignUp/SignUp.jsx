@@ -4,6 +4,7 @@ import { imageUpload } from '../../api/Utils';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { PiSpinnerFill } from "react-icons/pi";
+import { getToken, saveUser } from '../../api/Auth';
 
 
 
@@ -25,7 +26,9 @@ const SignUp = () => {
       const result = await createUser(email, password);
       //3. update profile 
       await updateUserProfile(name, imageData?.data?.display_url)
-      console.log(result);
+      const dbResponse = await saveUser(result?.user)
+      console.log(dbResponse);
+      await getToken(result?.user?.email)
       toast.success('User created successfully!')
 
     }
@@ -39,7 +42,9 @@ const SignUp = () => {
     try{
       //1. user register or create user 
       const result = await signInWithGoogle();
-      console.log(result);
+      const dbResponse = await saveUser(result?.user)
+      console.log(dbResponse);
+      await getToken(result?.user?.email)
       toast.success('User sign-up successfully!')
       navigate('/');
 

@@ -3,6 +3,7 @@ import { GrGoogle } from "react-icons/gr";
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { PiSpinnerFill } from "react-icons/pi";
+import { getToken, saveUser } from '../../api/Auth';
 
 const Login = () => {
   const {signIn, signInWithGoogle, loading} = useAuth();
@@ -19,9 +20,9 @@ const Login = () => {
     try{
       //1. user sign In 
       const result = await signIn(email, password);
-      console.log(result)
+      await getToken(result?.user?.email)
       toast.success('Login Successfully!')
-      navigate(from, {replace: true});
+      navigate('/');
 
     }
     catch(err){
@@ -34,7 +35,9 @@ const Login = () => {
     try{
       //1. user register or create user 
       const result = await signInWithGoogle();
-      console.log(result)
+      const dbResponse = await saveUser(result?.user)
+      console.log(dbResponse);
+      await getToken(result?.user?.email)
       toast.success('User sign-up successfully!')
       navigate(from, {replace: true});
 
@@ -45,8 +48,6 @@ const Login = () => {
     }
 
   }
-
-
   return (
     <div className='flex justify-center items-center min-h-screen'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>

@@ -42,9 +42,13 @@ const AuthProvider = ({ children }) => {
   }
 
   const logOut = async () => {
-    setLoading(true)
-    return signOut(auth)
+    setLoading(true);
+    // Remove the token from localStorage
+    localStorage.removeItem('accessToken');
+    // Perform any other logout logic you may need
+    return signOut(auth);
   }
+  
 
   const updateUserProfile = (name, photo) => {
     return updateProfile(auth.currentUser, {
