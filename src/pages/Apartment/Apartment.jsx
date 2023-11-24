@@ -1,5 +1,5 @@
 import Container from '../../components/Shared/Container';
-import { useQuery } from '@tanstack/react-query'; // Assuming you have installed @tanstack/react-query
+import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure';
 
 const Apartment = () => {
