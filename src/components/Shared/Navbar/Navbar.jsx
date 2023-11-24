@@ -26,6 +26,7 @@ const Navbar = () => {
                         <div className="flex-none hidden lg:block">
                             <ul className="menu menu-horizontal">
                             <li><NavLink to="/">Home</NavLink></li>
+                            <li><NavLink to="/apartment">Apartment</NavLink></li>
                             </ul>
                         </div>
                         </div>

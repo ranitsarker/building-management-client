@@ -1,5 +1,5 @@
-import Slider from "../../compoments/Home/Slider";
-import Container from "../../compoments/Shared/Container";
+import Slider from "../../components/Home/Slider";
+import Container from "../../components/Shared/Container";
 
 const Home = () => {
     return (
