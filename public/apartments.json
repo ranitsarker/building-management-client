@@ -13,7 +13,8 @@
             "floorNo": "1",
             "blockName": "A",
             "apartmentNo": "101",
-            "rent": 305
+            "rent": 305,
+            "Status": "pending"
           }
         }
       },
@@ -30,7 +31,8 @@
             "floorNo": "2",
             "blockName": "B",
             "apartmentNo": "201",
-            "rent": 269
+            "rent": 269,
+            "Status": "pending"
           }
         }
       }
