@@ -1,6 +1,7 @@
 import Container from '../../components/Shared/Container';
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure';
+import useAuth from '../../hooks/useAuth';
 
 const Apartment = () => {
   const { data: apartments, error, isLoading } = useQuery({
@@ -10,7 +11,8 @@ const Apartment = () => {
       return response.data;
     },
   });
-  
+
+  const { user } = useAuth();
 
   if (isLoading) {
     return <p>Loading...</p>; // You can add a loading indicator if needed
@@ -21,12 +23,47 @@ const Apartment = () => {
     return <p>Error fetching data</p>; // You can handle errors more gracefully
   }
 
+  const handleAgreementButtonClick = async (apartment) => {
+    try {
+      // Extract specific fields from apartment information
+      const { apartmentNo, blockName, floorNo, rent } = apartment;
+  
+      // Extract specific fields from user information
+      const { displayName, email } = user;
+  
+      // Prepare the agreement data
+      const agreementData = {
+        apartmentId: apartment._id,
+        userId: user.uid,
+        apartmentInfo: {
+          apartmentNo,
+          blockName,
+          floorNo,
+          rent,
+          status: 'pending',
+        },
+        userInfo: {
+          displayName,
+          email,
+        },
+      };
+  
+      // Make a POST request to save the agreement
+      const response = await axiosSecure.post('/saveAgreement', agreementData);
+  
+      // Log the response or perform additional actions based on the server's response
+      console.log('Agreement saved:', response.data);
+    } catch (error) {
+      console.error('Error saving agreement:', error);
+    }
+  };
+
   return (
     <>
       <Container>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {apartments.map((apartment) => (
-            <div key={apartment.apartmentId} className="bg-white p-6 rounded-lg shadow-md">
+            <div key={apartment._id} className="bg-white p-6 rounded-lg shadow-md">
               <img
                 src={apartment.image}
                 alt={`Apartment ${apartment.apartmentNo}`}
@@ -36,8 +73,16 @@ const Apartment = () => {
               <p className="text-gray-600">Block name: {apartment.blockName}</p>
               <p className="text-gray-600">Apartment no: {apartment.apartmentNo}</p>
               <p className="text-gray-600">Rent: ${apartment.rent}</p>
+              {user && (
+                <>
+                  <p className="text-gray-600">Logged in as: {user.displayName}</p>
+                  <p className="text-gray-600">Email: {user.email}</p>
+                  {/* Add more user-related information as needed */}
+                </>
+              )}
               <button
                 className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                onClick={() => handleAgreementButtonClick(apartment)}
               >
                 Agreement
               </button>

@@ -5,7 +5,6 @@ const axiosSecure = axios.create({
   withCredentials: true,
 });
 
-// Add a response interceptor
 axiosSecure.interceptors.response.use(
   (response) => {
     // Handle successful responses
@@ -20,16 +19,19 @@ axiosSecure.interceptors.response.use(
       if (error.response.status === 401 || error.response.status === 403) {
         // Clear the token from localStorage
         localStorage.removeItem('accessToken');
-        
+
         // Redirect to the login page or handle the unauthorized access as needed
         window.location.replace('/login');
       }
     } else {
       // Handle the case where error.response is undefined
       console.error('Error response is undefined:', error);
-    }
 
-    return Promise.reject(error);
+      // You may want to add additional handling here based on your requirements
+
+      // For example, you can reject the promise with a custom error message
+      return Promise.reject(new Error('Undefined error response'));
+    }
   }
 );
 
