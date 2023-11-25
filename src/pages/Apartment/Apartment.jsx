@@ -2,6 +2,7 @@ import Container from '../../components/Shared/Container';
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure';
 import useAuth from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const Apartment = () => {
   const { data: apartments, error, isLoading } = useQuery({
@@ -53,6 +54,8 @@ const Apartment = () => {
   
       // Log the response or perform additional actions based on the server's response
       console.log('Agreement saved:', response.data);
+      toast.success('Agreement sent successfully');
+
     } catch (error) {
       console.error('Error saving agreement:', error);
     }

@@ -1,8 +1,8 @@
 import axiosSecure from "./axiosSecure"
 export const saveUser = async user => {
     const currentUser = {
-        name: user.displayName,
-        email: user.email, 
+        name: user?.displayName,
+        email: user?.email, 
         role: 'user',
         status: 'Verified',
     }

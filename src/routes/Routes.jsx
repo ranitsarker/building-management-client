@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home";
 import Apartment from "../pages/Apartment/Apartment";
 import SignUp from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
+import AgreementRequests from "../pages/Dashboard/AgreementRequests";
 
 export const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
             path: 'login',
             element: <Login></Login>,
         },
+        {
+            path: '/agreement-requests',
+            element:<AgreementRequests></AgreementRequests>,
+          },
        ]
     }
 ])
