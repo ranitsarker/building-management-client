@@ -5,6 +5,7 @@ import Apartment from "../pages/Apartment/Apartment";
 import SignUp from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
 import AgreementRequests from "../pages/Dashboard/AgreementRequests";
+import Dashboard from "../pages/DashBoard/Dashboard";
 
 export const router = createBrowserRouter([
     {
@@ -30,7 +31,11 @@ export const router = createBrowserRouter([
         {
             path: '/agreement-requests',
             element:<AgreementRequests></AgreementRequests>,
-          },
+        },
+        {
+            path: '/dashboard',
+            element:<Dashboard></Dashboard>,
+        },
        ]
     }
 ])
