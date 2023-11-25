@@ -1,16 +1,17 @@
-import Sidebar from '../../components/Dashboard/Sidebar';
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../components/Dashboard/Sidebar';
 
-const Dashboard = () => {
+const DashboardLayout = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar></Sidebar>
 
       {/* Dashboard Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Page Title/Header */}
         <header className="bg-white shadow-md py-4 px-6">
-          <h1 className="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
         </header>
 
         {/* Main Content Area */}
@@ -18,7 +19,8 @@ const Dashboard = () => {
           {/* Add your dashboard content here */}
           {/* For example, you can add some cards, charts, etc. */}
           <div className="container mx-auto p-4">
-            {/* Your content goes here */}
+            <Outlet></Outlet>
+
           </div>
         </main>
       </div>
@@ -26,4 +28,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardLayout;

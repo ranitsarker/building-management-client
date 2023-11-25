@@ -22,7 +22,6 @@ const AgreementRequests = () => {
 
     <>
         <div className="container mx-auto p-8">
-            <h1 className="text-3xl font-bold mb-8">Agreement Requests</h1>
             <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-300">
                 <thead className="bg-yellow-500 text-white">

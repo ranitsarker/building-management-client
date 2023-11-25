@@ -5,7 +5,9 @@ import Apartment from "../pages/Apartment/Apartment";
 import SignUp from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
 import AgreementRequests from "../pages/Dashboard/AgreementRequests";
-import Dashboard from "../pages/DashBoard/Dashboard";
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
     {
@@ -28,14 +30,21 @@ export const router = createBrowserRouter([
             path: 'login',
             element: <Login></Login>,
         },
-        {
-            path: '/agreement-requests',
-            element:<AgreementRequests></AgreementRequests>,
-        },
-        {
-            path: '/dashboard',
-            element:<Dashboard></Dashboard>,
-        },
        ]
-    }
+    },
+    {
+        path: '/dashboard', 
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        children: [
+          {
+            path: 'agreement-requests',
+            element: 
+            <PrivateRoute>
+                <AdminRoute>
+                    <AgreementRequests></AgreementRequests>
+                </AdminRoute>
+            </PrivateRoute>,
+          },
+      ]
+      },
 ])
