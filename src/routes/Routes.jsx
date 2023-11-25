@@ -8,6 +8,7 @@ import AgreementRequests from "../pages/Dashboard/AgreementRequests";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
+import MemberProfile from "../pages/DashBoard/Member/MemberProfile";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
         {
             path: 'login',
             element: <Login></Login>,
+        },
+        {
+            path: 'memberProfile',
+            element: <MemberProfile></MemberProfile>,
         },
        ]
     },
