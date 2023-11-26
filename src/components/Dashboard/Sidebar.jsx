@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
 import AdminMenu from "./AdminMenu";
 import MemberMenu from "./MemberMenu";
+import UserMenu from "./UserMenu";
 
 
 const Sidebar = () => {
@@ -17,6 +18,9 @@ const Sidebar = () => {
              </nav>
              <nav>
              {role === "member" && <MemberMenu></MemberMenu>}
+             </nav>
+             <nav>
+             {role === "user" && <UserMenu></UserMenu>}
              </nav>
             
             <button className='flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform'>
