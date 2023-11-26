@@ -11,7 +11,7 @@ const DashboardLayout = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Page Title/Header */}
         <header className="bg-white shadow-md py-4 px-6">
-          <h1 className="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
         </header>
 
         {/* Main Content Area */}

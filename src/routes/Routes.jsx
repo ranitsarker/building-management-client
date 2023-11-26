@@ -8,6 +8,7 @@ import AgreementRequests from "../pages/Dashboard/AgreementRequests";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
+import MemberRoute from "./MemberRoute";
 import MemberProfile from "../pages/DashBoard/Member/MemberProfile";
 
 export const router = createBrowserRouter([
@@ -31,10 +32,6 @@ export const router = createBrowserRouter([
             path: 'login',
             element: <Login></Login>,
         },
-        {
-            path: 'memberProfile',
-            element: <MemberProfile></MemberProfile>,
-        },
        ]
     },
     {
@@ -48,6 +45,15 @@ export const router = createBrowserRouter([
                 <AdminRoute>
                     <AgreementRequests></AgreementRequests>
                 </AdminRoute>
+            </PrivateRoute>,
+          },
+          {
+            path: 'member-profile',
+            element: 
+            <PrivateRoute>
+                <MemberRoute>
+                    <MemberProfile></MemberProfile>
+                </MemberRoute>
             </PrivateRoute>,
           },
       ]

@@ -2,6 +2,7 @@ import { GrLogout } from "react-icons/gr";
 import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
 import AdminMenu from "./AdminMenu";
+import MemberMenu from "./MemberMenu";
 
 
 const Sidebar = () => {
@@ -13,6 +14,9 @@ const Sidebar = () => {
         <div>
              <nav>
              {role === "admin" && <AdminMenu></AdminMenu>}
+             </nav>
+             <nav>
+             {role === "member" && <MemberMenu></MemberMenu>}
              </nav>
             
             <button className='flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform'>

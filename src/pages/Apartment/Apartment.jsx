@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Apartment = () => {
   const { data: apartments, error, isLoading } = useQuery({
@@ -13,7 +14,8 @@ const Apartment = () => {
     },
   });
 
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <p>Loading...</p>; // You can add a loading indicator if needed
@@ -26,8 +28,13 @@ const Apartment = () => {
 
   const handleAgreementButtonClick = async (apartment) => {
     try {
+      if (!isAuthenticated) {
+        // If not authenticated, navigate to the login page
+        navigate('/login');
+        return;
+      }
       // Extract specific fields from apartment information
-      const { apartmentNo, blockName, floorNo, rent } = apartment;
+      const { apartmentNo, blockName, floorNo, rent, image } = apartment;
   
       // Extract specific fields from user information
       const { displayName, email } = user;
@@ -37,6 +44,7 @@ const Apartment = () => {
         apartmentId: apartment._id,
         userId: user.uid,
         apartmentInfo: {
+          image,
           apartmentNo,
           blockName,
           floorNo,
