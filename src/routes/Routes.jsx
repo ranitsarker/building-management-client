@@ -11,6 +11,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import MemberRoute from "./MemberRoute";
 import MemberProfile from "../pages/DashBoard/Member/MemberProfile";
 import UserProfile from "../pages/DashBoard/User/UserProfile";
+import ManageMembers from "../pages/DashBoard/Admin/ManageMembers";
 
 export const router = createBrowserRouter([
     {
@@ -63,6 +64,13 @@ export const router = createBrowserRouter([
             <PrivateRoute>
                 <UserProfile></UserProfile>
             </PrivateRoute>,
+          },
+          {
+            path: 'manage-members',
+            element: 
+            <AdminRoute>
+                <ManageMembers></ManageMembers>
+            </AdminRoute>,
           },
       ]
       },

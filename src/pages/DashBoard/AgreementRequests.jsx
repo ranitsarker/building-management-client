@@ -81,6 +81,9 @@ const AgreementRequests = () => {
   return (
     <>
       <div className="container mx-auto p-8">
+        {agreements.length === 0 ? (
+                  <p>No Agreement request has been created yet.</p>
+        ): (
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-300">
             <thead className="bg-yellow-500 text-white">
@@ -136,6 +139,8 @@ const AgreementRequests = () => {
             </tbody>
           </table>
         </div>
+
+        )}
       </div>
     </>
   );
