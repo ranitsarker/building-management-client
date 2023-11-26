@@ -8,6 +8,10 @@ const MemberMenu = () => {
                 label='Member Profile'
                 address='member-profile'
             />
+             <MenuItem
+                label='Announcements'
+                address='announcements'
+            />
         </>
     );
 };

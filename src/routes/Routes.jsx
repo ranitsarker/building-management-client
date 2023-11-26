@@ -13,6 +13,7 @@ import MemberProfile from "../pages/DashBoard/Member/MemberProfile";
 import UserProfile from "../pages/DashBoard/User/UserProfile";
 import ManageMembers from "../pages/DashBoard/Admin/ManageMembers";
 import MakeAnnouncement from "../pages/DashBoard/Admin/MakeAnnouncement";
+import Announcements from "../pages/DashBoard/Shared/Announcements";
 
 export const router = createBrowserRouter([
     {
@@ -79,6 +80,13 @@ export const router = createBrowserRouter([
             <AdminRoute>
                 <MakeAnnouncement></MakeAnnouncement>
             </AdminRoute>,
+          },
+          {
+            path: 'announcements',
+            element: 
+            <PrivateRoute>
+                <Announcements></Announcements>
+            </PrivateRoute>,
           },
       ]
       },
