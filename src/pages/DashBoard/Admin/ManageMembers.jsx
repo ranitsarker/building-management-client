@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../../api/axiosSecure';
-import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const ManageMembers = () => {
   const { data: members, error, isLoading, refetch } = useQuery({
@@ -15,50 +15,23 @@ const ManageMembers = () => {
     },
   });
 
-  const handleDeleteMember = async (memberId) => {
+  const backToUserRole = async (memberId, userEmail) => {
     try {
-      // Show confirmation dialog using SweetAlert
-      const result = await Swal.fire({
-        title: 'Are you sure?',
-        text: "Delete that member",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      });
-  
-      // Check if the user confirmed the deletion
-      if (result.isConfirmed) {
-        // Perform deletion if user confirms
-        await axiosSecure.delete('/deleteMember', {
-          data: {
-            memberId,
-          },
-        });
-  
-        // Show success message using SweetAlert
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'That member and that member all agreements has deleted',
-          icon: 'success',
-        });
-  
-        // Refetch the members data after deletion
-        refetch();
-      }
+      // Update user role to 'user'
+      await axiosSecure.put(`/updateUserRole/${userEmail}`, { role: 'user' });
+
+      // Show success toast notification for role change
+      toast.success('Member role has been changed to user');
+
+      // Refetch the members data after role change
+      refetch();
     } catch (error) {
-      // Show error message using SweetAlert
-      Swal.fire({
-        title: 'Error!',
-        text: `Error deleting member: ${error.message}`,
-        icon: 'error',
-      });
-  
-      console.error('Error deleting member:', error.message);
+      // Show error toast notification
+      toast.error(`Error changing member role: ${error.message}`);
+
+      console.error('Error changing member role:', error.message);
     }
   };
-  
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -84,10 +57,10 @@ const ManageMembers = () => {
               <p className="text-xl font-semibold mb-2">Name: {member.name}</p>
               <p>Email: {member.email}</p>
               <button
-                onClick={() => handleDeleteMember(member._id)}
-                className="mt-4 p-2 bg-red-500 text-white rounded-full"
+                onClick={() => backToUserRole(member._id, member.email)}
+                className="mt-4 p-2 bg-blue-500 text-white rounded-full"
               >
-                Delete
+                Remove
               </button>
             </div>
           ))}

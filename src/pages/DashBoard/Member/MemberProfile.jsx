@@ -39,7 +39,9 @@ const MemberProfile = () => {
             <p className="text-xl font-semibold mb-2">
               Agreement ID: {agreement._id}
             </p>
+            <p>Accepted Date: {agreement.acceptedDate}</p>
             <p>Status: {agreement.status}</p>
+
             <div className="mt-4">
               <p className="font-semibold mb-2">Apartment Info:</p>
               <ul>
@@ -50,11 +52,10 @@ const MemberProfile = () => {
               </ul>
             </div>
             <div className="mt-4">
-              <p className="font-semibold mb-2">User Info:</p>
+              <p className="font-semibold mb-2">Info:</p>
               <ul>
                 <li>Name: {user.displayName}</li>
                 <li>Email: {user.email}</li>
-                <li>Accepted Date: {agreement.acceptedDate}</li>
                 <li>Profile Image: <img src={user.photoURL} alt={user.displayName} className="mt-2 w-full h-auto object-cover rounded-md" /></li>
               </ul>
             </div>
