@@ -5,6 +5,15 @@ const axiosSecure = axios.create({
   withCredentials: true,
 });
 
+// Set token in Axios headers
+const setTokenInHeaders = () => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    axiosSecure.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }
+};
+setTokenInHeaders();
+
 axiosSecure.interceptors.response.use(
   (response) => {
     // Handle successful responses
