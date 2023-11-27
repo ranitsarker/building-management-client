@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 import axiosSecure from "../../api/axiosSecure";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-
-
-
 const CheckoutForm = () => {
   const [error, setError] = useState('');
   const [clientSecret, setClientSecret] = useState();
@@ -70,6 +67,18 @@ const CheckoutForm = () => {
     if (paymentIntent.status === 'succeeded') {
       console.log('transaction id', paymentIntent.id);
       setTransactionId(paymentIntent.id);
+
+      // database save
+      const paymentSave = {
+        email: user.email,
+        price: price,
+        transactionId: paymentIntent.id,
+        data: new Date(),
+
+      }
+     const res = await axiosSecure.post('/payments', paymentSave)
+     console.log('payment save:', res);
+
     }
     
   }
