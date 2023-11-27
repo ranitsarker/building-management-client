@@ -12,6 +12,10 @@ const MemberMenu = () => {
                 label='Announcements'
                 address='announcements'
             />
+            <MenuItem
+                label='Make Payment'
+                address='make-payment'
+            />
         </>
     );
 };
