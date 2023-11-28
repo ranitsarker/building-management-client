@@ -16,6 +16,7 @@ import MakeAnnouncement from "../pages/DashBoard/Admin/MakeAnnouncement";
 import Announcements from "../pages/DashBoard/Shared/Announcements";
 import MakePayment from "../pages/DashBoard/Member/MakePayment";
 import Payment from "../pages/DashBoard/Member/Payment";
+import PaymentHistory from "../pages/DashBoard/Member/PaymentHistory";
 
 export const router = createBrowserRouter([
     {
@@ -102,6 +103,13 @@ export const router = createBrowserRouter([
             element: 
             <MemberRoute>
                 <Payment></Payment>
+            </MemberRoute>,
+          },
+          {
+            path: 'payment-history',
+            element: 
+            <MemberRoute>
+                <PaymentHistory></PaymentHistory>
             </MemberRoute>,
           },
       ]

@@ -16,6 +16,10 @@ const MemberMenu = () => {
                 label='Make Payment'
                 address='make-payment'
             />
+            <MenuItem
+                label='Payment History'
+                address='payment-history'
+            />
         </>
     );
 };

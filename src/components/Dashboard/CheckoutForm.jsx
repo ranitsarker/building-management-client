@@ -73,8 +73,7 @@ const CheckoutForm = () => {
         email: user.email,
         price: price,
         transactionId: paymentIntent.id,
-        data: new Date(),
-
+        date: new Date(),
       }
      const res = await axiosSecure.post('/payments', paymentSave)
      console.log('payment save:', res);

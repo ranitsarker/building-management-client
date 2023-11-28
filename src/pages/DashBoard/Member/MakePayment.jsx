@@ -1,15 +1,23 @@
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axiosSecure from '../../../api/axiosSecure';
+import useAuth from '../../../hooks/useAuth';
 import { Link } from 'react-router-dom';
-import useMakePayment from '../../../hooks/useMakePayment';
 
 const MakePayment = () => {
-  const {
-    user,
-    selectedMonth,
-    setSelectedMonth,
-    agreements,
-    isLoading,
-    error,
-  } = useMakePayment();
+  const { user } = useAuth();
+  const [selectedMonth, setSelectedMonth] = useState('');
+
+  // Fetch apartment information
+  const { data: agreements, error, isLoading: apartmentLoading } = useQuery({
+    queryKey: 'agreements',
+    queryFn: async () => {
+      const response = await axiosSecure.get('/fetchAllAgreements');
+      return response.data;
+    },
+  });
+
+
 
   const handlePaymentSubmit = async () => {
     // Perform payment submission logic
@@ -18,27 +26,29 @@ const MakePayment = () => {
     // Display success/failure message based on the server response
   };
 
-  if (isLoading) {
+  if (apartmentLoading) {
     return <p>Loading...</p>;
   }
 
   if (error) {
     return <p>Error fetching agreements: {error.message}</p>;
   }
+  // Filter agreements based on the condition
+  const filteredAgreements = agreements.filter(
+    (agreement) =>
+      agreement.status === 'accepted' && agreement.userInfo.email === user.email
+  );
 
   return (
     <div className="container mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">Make Payment</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {agreements.map((agreement) => (
+        {filteredAgreements.map((agreement) => (
           <div
             key={agreement._id}
             className="bg-white p-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
           >
-            <form
-              onSubmit={() => handlePaymentSubmit(agreement)}
-              className="space-y-4"
-            >
+            <form onSubmit={() => handlePaymentSubmit(agreement)} className="space-y-4">
               {/* Column 1 */}
               <div>
                 <label htmlFor="userName">Name:</label>
@@ -110,45 +120,46 @@ const MakePayment = () => {
               </div>
   
               {/* Add form fields for payment, including selectedMonth */}
-              <div>
-                <label htmlFor="selectedMonth">Select Month:</label>
-                <select
-                  id="selectedMonth"
-                  name="selectedMonth"
-                  value={selectedMonth}
-                  onChange={(e) => setSelectedMonth(e.target.value)}
-                  required
-                  className="form-select"
-                >
-                  <option value="" disabled>Select a month</option>
-                  <option value="January">January</option>
-                  <option value="February">February</option>
-                  <option value="March">March</option>
-                  <option value="April">April</option>
-                  <option value="May">May</option>
-                  <option value="June">June</option>
-                  <option value="July">July</option>
-                  <option value="August">August</option>
-                  <option value="September">September</option>
-                  <option value="October">October</option>
-                  <option value="November">November</option>
-                  <option value="December">December</option>
-                </select>
-              </div>
-              <div>
+                <div>
+                    <label htmlFor="selectedMonth">Select Month:</label>
+                    <select
+                        id="selectedMonth"
+                        name="selectedMonth"
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(e.target.value)}
+                        required
+                        className="form-select"
+                    >
+                        <option value="" disabled>Select a month</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+                    </select>
+                </div>
+                <div>
                 <Link to={`/dashboard/payment?price=${agreement.apartmentInfo.rent}`}>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Submit Payment
-                  </button>
+                    <button
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Submit Payment
+                    </button>
                 </Link>
-              </div>
+                </div>
+
             </form>
-          </div>
+        </div>
         ))}
-      </div>
+        </div>
       <hr className="my-4" />
     </div>
   );
