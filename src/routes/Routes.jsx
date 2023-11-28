@@ -17,6 +17,7 @@ import Announcements from "../pages/DashBoard/Shared/Announcements";
 import MakePayment from "../pages/DashBoard/Member/MakePayment";
 import Payment from "../pages/DashBoard/Member/Payment";
 import PaymentHistory from "../pages/DashBoard/Member/PaymentHistory";
+import ManageCoupons from "../pages/DashBoard/Admin/ManageCoupons";
 
 export const router = createBrowserRouter([
     {
@@ -111,6 +112,13 @@ export const router = createBrowserRouter([
             <MemberRoute>
                 <PaymentHistory></PaymentHistory>
             </MemberRoute>,
+          },
+          {
+            path: 'manage-coupons',
+            element: 
+            <AdminRoute>
+                <ManageCoupons></ManageCoupons>
+            </AdminRoute>,
           },
       ]
       },
