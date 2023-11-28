@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import axiosSecure from "../../api/axiosSecure";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import CouponForm from "./CouponForm";
+
 const CheckoutForm = () => {
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [error, setError] = useState('');
   const [clientSecret, setClientSecret] = useState();
   const stripe = useStripe();
@@ -15,14 +18,29 @@ const CheckoutForm = () => {
   const priceFromUrl = new URLSearchParams(location.search).get("price");
   const price = parseFloat(priceFromUrl);
 
-    useEffect(() => {
-      axiosSecure.post('/create-payment-intent', {price: price})
-      .then(res =>{
+  // Function to handle applying a coupon
+  const handleApplyCoupon = (coupon) => {
+    setAppliedCoupon(coupon);
+  };
+
+  // Function to calculate the discounted total
+  const calculateDiscountedTotal = () => {
+    if (appliedCoupon) {
+      // Calculate the discounted total based on the coupon percentage
+      const discountPercentage = parseFloat(appliedCoupon.discountPercentage);
+      const discountMultiplier = 1 - discountPercentage / 100;
+      return (price * discountMultiplier).toFixed(2);
+    }
+    return price.toFixed(2); // If no coupon applied, return the original price
+  };
+
+  useEffect(() => {
+    axiosSecure.post('/create-payment-intent', { price: calculateDiscountedTotal() })
+      .then(res => {
         console.log(res.data.clientSecret);
         setClientSecret(res.data.clientSecret);
-      })
-
-    }, [price])
+      });
+  }, [price, appliedCoupon]);
 
   const handleSubmitCheckout = async (event) => {
     event.preventDefault();
@@ -37,56 +55,59 @@ const CheckoutForm = () => {
     }
 
     // Use card Element with other Stripe.js APIs
-    const {error, paymentMethod} = await stripe.createPaymentMethod({
-        type: 'card',
-        card,
-        });
-    
-        if (error) {
-        console.log('[error]', error);
-        setError(error.message);
-        } else {
-        console.log('[PaymentMethod]', paymentMethod);
-        setError('');
-        }
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card,
+    });
+
+    if (error) {
+      console.log('[error]', error);
+      setError(error.message);
+    } else {
+      console.log('[PaymentMethod]', paymentMethod);
+      setError('');
+    }
 
     // confirm payment
     const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-          card: card,
-          billing_details: {
-              email: user?.email || 'anonymous',
-              name: user?.displayName || 'anonymous'
-          }
+        card: card,
+        billing_details: {
+          email: user?.email || 'anonymous',
+          name: user?.displayName || 'anonymous'
+        }
       }
-  })    
-  if (confirmError) {
-    console.log('confirm error')  
-  }else{
-    console.log('payment intent', paymentIntent)
-    if (paymentIntent.status === 'succeeded') {
-      console.log('transaction id', paymentIntent.id);
-      setTransactionId(paymentIntent.id);
+    });
+    if (confirmError) {
+      console.log('confirm error')
+    } else {
+      console.log('payment intent', paymentIntent);
+      if (paymentIntent.status === 'succeeded') {
+        console.log('transaction id', paymentIntent.id);
+        setTransactionId(paymentIntent.id);
 
-      // database save
-      const paymentSave = {
-        email: user.email,
-        price: price,
-        transactionId: paymentIntent.id,
-        date: new Date(),
+        // database save
+        const paymentSave = {
+          email: user.email,
+          price: calculateDiscountedTotal(),
+          transactionId: paymentIntent.id,
+          date: new Date(),
+        };
+        const res = await axiosSecure.post('/payments', paymentSave);
+        console.log('payment save:', res);
       }
-     const res = await axiosSecure.post('/payments', paymentSave)
-     console.log('payment save:', res);
-
     }
-    
-  }
-
   };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md">
       <h2 className="text-2xl font-bold mb-6">Payment Information</h2>
+      <CouponForm onApplyCoupon={handleApplyCoupon} />
+      {appliedCoupon && (
+        <div className="mb-4">
+          <p className="text-green-600">Discounted Total: ${calculateDiscountedTotal()}</p>
+        </div>
+      )}
       <form onSubmit={handleSubmitCheckout}>
         <div className="mb-4">
           <label htmlFor="cardElement" className="block text-gray-700 text-sm font-bold mb-2">

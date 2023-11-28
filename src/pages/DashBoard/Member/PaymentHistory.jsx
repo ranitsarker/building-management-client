@@ -1,4 +1,5 @@
 
+
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../../api/axiosSecure';
 import useAuth from '../../../hooks/useAuth';
@@ -29,30 +30,34 @@ const PaymentHistory = () => {
   }
 
   return (
-<div className="bg-white p-8 rounded-md shadow-md">
+<div className="container mx-auto mt-8">
   <h2 className="text-3xl font-bold mb-6">Payment History</h2>
   {paymentHistory.length > 0 ? (
-    <ul className="list-disc pl-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {paymentHistory.map((payment) => (
-        <li key={payment.transactionId} className="mb-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="font-bold">Transaction ID:</span> {payment.transactionId}
-            </div>
-            <div>
-              <span className="font-bold">Price:</span> ${payment.price.toFixed(2)}
-            </div>
-            <div>
-              <span className="font-bold">Date:</span> {new Date(payment.date).toLocaleDateString()}
-            </div>
+        <div key={payment.transactionId} className="bg-white p-6 rounded-md shadow-md mb-4">
+          <div className="mb-4">
+            <span className="font-bold">Transaction ID:</span>
+            <div className="text-gray-700">{payment.transactionId}</div>
           </div>
-        </li>
+          <div className="mb-4">
+            <span className="font-bold">Price:</span>{' '}
+            {!isNaN(Number(payment.price))
+              ? `$${Number(payment.price).toFixed(2)}`
+              : 'Invalid Price'}
+          </div>
+          <div>
+            <span className="font-bold">Date:</span>{' '}
+            {new Date(payment.date).toLocaleDateString()}
+          </div>
+        </div>
       ))}
-    </ul>
+    </div>
   ) : (
     <p className="text-gray-500">No payment history available.</p>
   )}
 </div>
+
 
   );
 };
