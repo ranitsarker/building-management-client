@@ -1,30 +1,32 @@
+// useMakePayment.js
+
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../api/axiosSecure';
 import useAuth from './useAuth';
 
 const useMakePayment = () => {
-    const { user } = useAuth();
-    const [selectedMonth, setSelectedMonth] = useState('');
-  
-    // Fetch apartment information
-    const { data: agreements, error, isLoading: apartmentLoading } = useQuery({
-      queryKey: 'agreements',
-      queryFn: async () => {
-        try {
-          const response = await axiosSecure.get('/fetchAllAgreements');
-          console.log('API Response:', response.data);
-          return response.data;
-        } catch (error) {
-          console.error('Error fetching agreements:', error);
-          throw error;
-        }
-      },
-    });
-  
-    // Add these logs for debugging
-    console.log('Filtered Agreements:', agreements);
-  
+  const { user } = useAuth();
+  const [selectedMonth, setSelectedMonth] = useState('');
+
+  // Fetch apartment information
+  const { data: agreements, error, isLoading: apartmentLoading } = useQuery({
+    queryKey: 'agreements',
+    queryFn: async () => {
+      try {
+        const response = await axiosSecure.get('/fetchAllAgreements');
+        console.log('API Response:', response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching agreements:', error);
+        throw error;
+      }
+    },
+  });
+
+  // Add these logs for debugging
+  console.log('Agreements:', agreements);
+
   const filteredAgreements = agreements?.filter(
     (agreement) =>
       agreement.status === 'accepted' && agreement.userInfo.email === user.email

@@ -4,6 +4,7 @@ import axiosSecure from "../../api/axiosSecure";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import CouponForm from "./CouponForm";
+import toast from "react-hot-toast";
 
 const CheckoutForm = () => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
@@ -95,6 +96,8 @@ const CheckoutForm = () => {
         };
         const res = await axiosSecure.post('/payments', paymentSave);
         console.log('payment save:', res);
+        toast.success('Payment has been successful and saved in payment history!');
+
       }
     }
   };
