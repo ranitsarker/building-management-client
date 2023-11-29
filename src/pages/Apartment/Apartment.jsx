@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import Container from '../../components/Shared/Container';
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+
+const PAGE_SIZE = 6;
 
 const Apartment = () => {
   const { data: apartments, error, isLoading } = useQuery({
@@ -13,6 +16,8 @@ const Apartment = () => {
       return response.data;
     },
   });
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -26,6 +31,12 @@ const Apartment = () => {
     return <p>Error fetching data</p>; // You can handle errors more gracefully
   }
 
+  const totalPages = Math.ceil(apartments.length / PAGE_SIZE);
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+
+  const visibleApartments = apartments.slice(startIndex, endIndex);
+
   const handleAgreementButtonClick = async (apartment) => {
     try {
       if (!isAuthenticated) {
@@ -35,10 +46,10 @@ const Apartment = () => {
       }
       // Extract specific fields from apartment information
       const { apartmentNo, blockName, floorNo, rent, image } = apartment;
-  
+
       // Extract specific fields from user information
       const { displayName, email } = user;
-  
+
       // Prepare the agreement data
       const agreementData = {
         apartmentId: apartment._id,
@@ -56,24 +67,27 @@ const Apartment = () => {
           email,
         },
       };
-  
+
       // Make a POST request to save the agreement
       const response = await axiosSecure.post('/saveAgreement', agreementData);
-  
+
       // Log the response or perform additional actions based on the server's response
       console.log('Agreement saved:', response.data);
       toast.success('Agreement sent successfully');
-
     } catch (error) {
       console.error('Error saving agreement:', error);
     }
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   return (
     <>
       <Container>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {apartments.map((apartment) => (
+          {visibleApartments.map((apartment) => (
             <div key={apartment._id} className="bg-white p-6 rounded-lg shadow-md">
               <img
                 src={apartment.image}
@@ -99,6 +113,33 @@ const Apartment = () => {
               </button>
             </div>
           ))}
+        </div>
+        <div className="mt-8 mb-8 flex justify-center items-center">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="mr-2 px-4 py-2 border rounded-full"
+          >
+            Prev
+          </button>
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`mx-2 px-4 py-2 border rounded-full ${
+                index + 1 === currentPage ? 'bg-blue-500 text-white' : ''
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="ml-2 px-4 py-2 border rounded-full"
+          >
+            Next
+          </button>
         </div>
       </Container>
     </>

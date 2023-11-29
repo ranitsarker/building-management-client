@@ -11,6 +11,7 @@ const setTokenInHeaders = () => {
   if (token) {
     axiosSecure.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
+  console.log('Token set in headers --->', token);
 };
 setTokenInHeaders();
 
@@ -38,8 +39,8 @@ axiosSecure.interceptors.response.use(
 
       // You may want to add additional handling here based on your requirements
 
-      // For example, you can reject the promise with a custom error message
-      return Promise.reject(new Error('Undefined error response'));
+    // Always reject the promise to propagate the error
+    return Promise.reject(error);
     }
   }
 );
