@@ -55,12 +55,24 @@ const PaymentHistory = () => {
                   : 'Invalid Price'}
               </div>
               <div>
-                <span className="font-bold">Date:</span>{' '}
+                <span className="font-bold">Transaction Date:</span>{' '}
                 {new Date(payment.date).toLocaleDateString()}
               </div>
               <div>
                 <span className="font-bold">Month:</span>{' '}
                 {payment.month}
+              </div>
+              <div>
+                <span className="font-bold">FloorNo:</span>{' '}
+                {payment.floorNo}
+              </div>
+              <div>
+                <span className="font-bold">BlockName:</span>{' '}
+                {payment.blockName}
+              </div>
+              <div>
+                <span className="font-bold">ApartmentNo:</span>{' '}
+                {payment.apartmentNo}
               </div>
             </div>
           ))}

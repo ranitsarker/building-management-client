@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 const ApartmentLocation = () => {
   return (
     <section className="p-8">
@@ -6,13 +7,16 @@ const ApartmentLocation = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {locations.map((location, index) => (
-            <div key={index} className="bg-white p-4 rounded-md shadow-md">
+            <motion.div key={index} className="bg-white p-4 rounded-md shadow-md"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            >
                 <img src={location.image} alt={location.name} />
               <h3 className="text-xl font-semibold mb-2">{location.name}</h3>
               <p className="text-gray-600">{location.address}</p>
               <p className="text-gray-600">{location.phoneNumber}</p>
               <p className="text-gray-600">{location.zipCode}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Container from '../Container'
 import logoImg from '/logo.png'
 import MenuDropdown from './MenuDropdown'
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   return (
@@ -11,12 +12,15 @@ const Navbar = () => {
           <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
             {/* Logo */}
             <Link to='/'>
-              <img
+              <motion.img
                 className=''
                 src={logoImg}
                 alt='logo'
                 width='100'
                 height='100'
+                initial={{ y: -200 }}
+                animate={{ y: -10 }}
+                transition={{ delay: 0.2, type: 'tween' }}
               />
             </Link>
             {/* Dropdown Menu */}
