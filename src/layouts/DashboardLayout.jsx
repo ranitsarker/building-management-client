@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import Sidebar from "../components/Dashboard/Sidebar";
 import { Outlet } from "react-router-dom";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [userRole, roleLoading] = useRole();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -31,6 +33,37 @@ const DashboardLayout = () => {
       document.removeEventListener("keydown", handleEscapeKey);
     };
   }, []);
+
+  const renderDashboardContent = () => {
+    if (roleLoading) {
+      return <p>Loading...</p>;
+    }
+
+    let welcomeMessage = "";
+    switch (userRole) {
+      case "admin":
+        welcomeMessage = "Welcome to Admin Dashboard";
+        break;
+      case "user":
+        welcomeMessage = "Welcome to User Dashboard";
+        break;
+      case "member":
+        welcomeMessage = "Welcome to Member Dashboard";
+        break;
+      default:
+        welcomeMessage = "No dashboard content for this role.";
+    }
+
+    return (
+      <div className="flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-800 md:mt-4 mt-2 mb-4">
+            {welcomeMessage}
+          </h2>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
@@ -75,7 +108,7 @@ const DashboardLayout = () => {
         {isDropdownOpen && (
           <div
             ref={dropdownRef}
-            className="lg:hidden absolute right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md"
+            className="lg:hidden absolute right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-md z-50"
           >
             <Sidebar />
           </div>
@@ -83,8 +116,7 @@ const DashboardLayout = () => {
 
         {/* Main Content Area */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-4">
-          {/* Add your dashboard content here */}
-          {/* For example, you can add some cards, charts, etc. */}
+          {renderDashboardContent()}
           <Outlet />
         </main>
       </div>

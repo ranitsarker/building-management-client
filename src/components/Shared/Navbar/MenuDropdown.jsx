@@ -20,13 +20,13 @@ const MenuDropdown = () => {
         {/* Dropdown btn */}
         <div
           onClick={() => setIsOpen(!isOpen)}
-          className='p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
+          className='p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded cursor-pointer hover:shadow-md transition'
         >
           <MdOutlineMenuOpen />
           <div className='hidden md:block'>
             {/* Avatar */}
             <img
-              className='rounded-full'
+              className='rounded'
               referrerPolicy='no-referrer'
               src={user && user.photoURL ? user.photoURL : avatarImg}
               alt='profile'
@@ -39,6 +39,13 @@ const MenuDropdown = () => {
       {isOpen && (
         <div className='absolute z-50 rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm'>
           <div className='flex flex-col cursor-pointer'>
+          {user && (
+            <p className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>
+              User: {user?.displayName}
+            </p>
+          )}
+          <hr />
+
             <Link
               to='/'
               className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
@@ -53,7 +60,6 @@ const MenuDropdown = () => {
             </Link>
             {user ? (
               <>
-              <p className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'>{user.displayName}</p>
                 <Link
                   to='/dashboard'
                   className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'

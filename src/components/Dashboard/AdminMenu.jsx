@@ -24,6 +24,10 @@ const AdminMenu = () => {
                 label='Manage Coupons'
                 address='manage-coupons'
             />
+            <MenuItem
+                label='Home'
+                address='/'
+            />
         </>
     );
 };

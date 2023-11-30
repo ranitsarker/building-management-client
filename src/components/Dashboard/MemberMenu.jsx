@@ -20,6 +20,10 @@ const MemberMenu = () => {
                 label='Payment History'
                 address='payment-history'
             />
+            <MenuItem
+                label='Home'
+                address='/'
+            />
         </>
     );
 };

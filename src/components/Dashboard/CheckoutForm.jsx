@@ -1,47 +1,43 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axiosSecure from "../../api/axiosSecure";
-import { useLocation } from "react-router-dom";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import useAuth from "../../hooks/useAuth";
 import CouponForm from "./CouponForm";
 import toast from "react-hot-toast";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ price, selectedMonth, agreementId }) => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [error, setError] = useState('');
   const [clientSecret, setClientSecret] = useState();
   const stripe = useStripe();
   const elements = useElements();
-  const location = useLocation();
   const { user } = useAuth();
   const [transactionId, setTransactionId] = useState('');
 
-  const priceFromUrl = new URLSearchParams(location.search).get("price");
-  const price = parseFloat(priceFromUrl);
-
-  // Function to handle applying a coupon
   const handleApplyCoupon = (coupon) => {
     setAppliedCoupon(coupon);
   };
 
-  // Function to calculate the discounted total
   const calculateDiscountedTotal = () => {
     if (appliedCoupon) {
-      // Calculate the discounted total based on the coupon percentage
       const discountPercentage = parseFloat(appliedCoupon.discountPercentage);
       const discountMultiplier = 1 - discountPercentage / 100;
       return (price * discountMultiplier).toFixed(2);
     }
-    return price.toFixed(2); // If no coupon applied, return the original price
+    return price.toFixed(2);
   };
 
   useEffect(() => {
-    axiosSecure.post('/create-payment-intent', { price: calculateDiscountedTotal() })
+    axiosSecure.post('/create-payment-intent', {
+      price: calculateDiscountedTotal(),
+      selectedMonth,
+      agreementId,
+    })
       .then(res => {
         console.log(res.data.clientSecret);
         setClientSecret(res.data.clientSecret);
       });
-  }, [price, appliedCoupon]);
+  }, [price, appliedCoupon, selectedMonth, agreementId]);
 
   const handleSubmitCheckout = async (event) => {
     event.preventDefault();
@@ -55,7 +51,6 @@ const CheckoutForm = () => {
       return;
     }
 
-    // Use card Element with other Stripe.js APIs
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card,
@@ -69,7 +64,6 @@ const CheckoutForm = () => {
       setError('');
     }
 
-    // confirm payment
     const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: card,
@@ -79,6 +73,7 @@ const CheckoutForm = () => {
         }
       }
     });
+
     if (confirmError) {
       console.log('confirm error')
     } else {
@@ -87,17 +82,18 @@ const CheckoutForm = () => {
         console.log('transaction id', paymentIntent.id);
         setTransactionId(paymentIntent.id);
 
-        // database save
         const paymentSave = {
+          agreementId: agreementId,
           email: user.email,
           price: calculateDiscountedTotal(),
           transactionId: paymentIntent.id,
           date: new Date(),
+          month: selectedMonth,
+
         };
         const res = await axiosSecure.post('/payments', paymentSave);
         console.log('payment save:', res);
         toast.success('Payment has been successful and saved in payment history!');
-
       }
     }
   };

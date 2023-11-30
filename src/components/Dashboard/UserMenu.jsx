@@ -12,6 +12,10 @@ const UserMenu = () => {
                 label='Announcements'
                 address='announcements'
             />
+            <MenuItem
+                label='Home'
+                address='/'
+            />
         </>
     );
 };
