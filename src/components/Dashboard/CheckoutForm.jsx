@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import CouponForm from "./CouponForm";
 import toast from "react-hot-toast";
 
-const CheckoutForm = ({ price, selectedMonth, agreementId }) => {
+const CheckoutForm = ({ price, selectedMonth, agreementId, floorNo, blockName, apartmentNo, rent }) => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [error, setError] = useState('');
   const [clientSecret, setClientSecret] = useState();
@@ -89,8 +89,12 @@ const CheckoutForm = ({ price, selectedMonth, agreementId }) => {
           transactionId: paymentIntent.id,
           date: new Date(),
           month: selectedMonth,
-
+          floorNo: floorNo,
+          blockName: blockName,
+          apartmentNo: apartmentNo,
+          rent: rent,
         };
+
         const res = await axiosSecure.post('/payments', paymentSave);
         console.log('payment save:', res);
         toast.success('Payment has been successful and saved in payment history!');

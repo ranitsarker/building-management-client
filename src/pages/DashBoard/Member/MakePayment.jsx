@@ -44,6 +44,7 @@ const MakePayment = () => {
     }));
   };
 
+
   return (
     <div className="container mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">Make Payment</h2>
@@ -149,10 +150,11 @@ const MakePayment = () => {
               </div>
               <div>
               <Link
-                to={`/dashboard/payment?price=${agreement.apartmentInfo.rent}&month=${selectedMonths[agreement._id] || ''}&agreementId=${agreement._id}`}
+                to={`/dashboard/payment?price=${agreement.apartmentInfo.rent}&month=${selectedMonths[agreement._id] || ''}&agreementId=${agreement._id}&floorNo=${agreement.apartmentInfo.floorNo}&blockName=${agreement.apartmentInfo.blockName}&apartmentNo=${agreement.apartmentInfo.apartmentNo}`}
               >
                 <button
-                  type="submit"
+                  type="button" // Change to button type
+                  onClick={() => handlePaymentSubmit(agreement)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   Submit Payment
