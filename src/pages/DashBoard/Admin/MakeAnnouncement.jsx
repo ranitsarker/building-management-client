@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import axiosSecure from '../../../api/axiosSecure';
+import toast from 'react-hot-toast';
 
 const MakeAnnouncement = () => {
   const { user } = useAuth(); // Assuming useAuth provides the user information
@@ -33,6 +34,7 @@ const MakeAnnouncement = () => {
   
       // Optionally, you can show a success message or redirect the user
       console.log('Announcement submitted successfully!');
+      toast.success('Announcement submitted successfully!');
   
       // Reset form fields after successful submission
       setAnnouncementData({
