@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure';
-import TotalRoomsCount from './TotalRoomsCount';
 
 const TotalAvailableRooms = () => {
   const { data: totalRoomCount, error: roomCountError, isLoading: roomCountLoading } = useQuery({
